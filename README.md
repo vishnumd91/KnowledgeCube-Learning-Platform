@@ -4,6 +4,8 @@ KnowledgeCube is an online learning platform designed to empower individuals and
 
 # System Design for KnowledgeCube Learning Platform
 
+![High Level Design](<./server/public/images/KnowledgeCube%20System%20Design%20(copy)%20-%20Overall%20High%20Level%20Design%402x.png>)
+
 ![Authentication HLD](./server/public/images/KnowledgeCube%20System%20Design%20-%20Authentication%20Workflow%402x.png)
 
 ![Core Data Model](./server/public/images/KnowledgeCube%20System%20Design%20-%20Entity%20Relationship%20Diagram%402x.png)
