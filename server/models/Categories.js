@@ -2,7 +2,10 @@ import mongoose from "mongoose";
 
 // Categories Collection Schema
 const categorySchema = new mongoose.Schema({
-  name: String,
+  name: {
+    type: String,
+    required: true,
+  },
   description: String,
   courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
 });
