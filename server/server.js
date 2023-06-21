@@ -3,12 +3,31 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
+import fs from "fs";
+import rotatingFileStream from "rotating-file-stream";
+
 import { connectDB } from "./config/db.js";
 
 import { router } from "./routes/index.js";
+import morgan from "morgan";
 
 const app = express();
 const PORT = process.env.PORT || 8080;
+
+// Define log file options for rotation and compression
+const logDirectory = path.join(process.cwd(), "logs");
+const accessLogStream = rotatingFileStream.createStream("access.log", {
+  interval: "1d", // Rotate daily
+  path: logDirectory,
+  compress: "gzip", // Compress rotated logs using gzip
+});
+
+// Create the log directory if it doesn't exist
+fs.mkdirSync(logDirectory, { recursive: true });
+
+// Set up Morgan to log to both the file and the console
+app.use(morgan("combined", { stream: accessLogStream }));
+app.use(morgan("combined")); // Log to console
 
 // Middleware and configurations
 app.use(
