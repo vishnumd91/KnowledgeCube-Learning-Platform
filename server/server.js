@@ -11,6 +11,8 @@ import { connectDB } from "./config/db.js";
 import { router } from "./routes/index.js";
 import morgan from "morgan";
 
+dotenv.config();
+
 const app = express();
 const PORT = process.env.PORT || 8080;
 
@@ -41,7 +43,6 @@ app.use(
     exposedHeaders: ["set-cookie"],
   })
 );
-dotenv.config();
 app.options("*", cors());
 app.use(express.json());
 app.use(cookieParser());

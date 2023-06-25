@@ -2,14 +2,21 @@ import mongoose from "mongoose";
 import { getUnixTimestamp } from "../utils/index.js";
 
 // Courses Collection Schema
-const courseSchema = new mongoose.Schema(
+export const courseSchema = new mongoose.Schema(
   {
     title: {
       type: String,
+      default: "",
       required: true,
     },
     description: {
       type: String,
+      default: "",
+      required: true,
+    },
+    category: {
+      type: String,
+      default: "",
       required: true,
     },
     instructor: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

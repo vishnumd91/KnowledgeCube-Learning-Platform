@@ -18,6 +18,7 @@ export const addCategories = async (req, res) => {
 export const getCategories = async (req, res) => {
   try {
     const categories = await Category.find();
+    // .populate('courses')
     return res.status(200).json(categories);
   } catch (error) {
     return res.status(404).json({
@@ -30,6 +31,7 @@ export const getCategoriesById = async (req, res) => {
   try {
     const categoryById = req.params.id;
     const receivedCategory = await Category.findById(categoryById);
+
     if (!receivedCategory) {
       return res
         .status(404)

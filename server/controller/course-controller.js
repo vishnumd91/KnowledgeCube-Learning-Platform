@@ -1,10 +1,22 @@
-import { Course } from "../models/index.js";
+import { Category, Course } from "../models/index.js";
 import { getUnixTimestamp } from "../utils/index.js";
 
 export const addCourse = async (req, res) => {
   try {
     const course = req.body;
     const newCourse = await Course.create(course);
+
+    // Find Category Data to populate course => Once populate() issue figured out will be using that with ref in model
+    const populateCategory = await Category.findOneAndUpdate(
+      { name: course.category },
+      { $push: { courses: newCourse } },
+      { new: true }
+    );
+
+    if (!populateCategory) {
+      return res.status(404).json({ message: "Category not found" });
+    }
+
     return res.status(201).json(newCourse);
   } catch (error) {
     return res.status(400).json({ message: error.message });
