@@ -27,8 +27,13 @@ export const courseSchema = new mongoose.Schema(
     difficultyLevel: {
       type: String,
       required: true,
+      default: "beginner",
     },
-    price: Number,
+    price: {
+      type: Number,
+      default: 0,
+      required: true,
+    },
     ratings: {
       type: [Number],
     },

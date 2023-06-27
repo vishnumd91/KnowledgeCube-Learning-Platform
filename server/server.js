@@ -10,6 +10,7 @@ import { connectDB } from "./config/db.js";
 
 import { router } from "./routes/index.js";
 import morgan from "morgan";
+import { errorHandler } from "./middleware/index.js";
 
 dotenv.config();
 
@@ -51,6 +52,9 @@ app.use(express.static("build"));
 
 // Mount the router
 app.use("/api", router);
+
+// Error Handler Middleware
+app.use(errorHandler);
 
 // Serve the React app's index.html for the root route
 app.get("/", (req, res) => {

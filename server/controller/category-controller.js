@@ -9,9 +9,7 @@ export const addCategories = async (req, res) => {
     const newCategory = await Category.create(categories);
     return res.status(201).json(newCategory);
   } catch (error) {
-    return res.status(409).json({
-      message: error.message,
-    });
+    next(error);
   }
 };
 
@@ -21,13 +19,11 @@ export const getCategories = async (req, res) => {
     // .populate('courses')
     return res.status(200).json(categories);
   } catch (error) {
-    return res.status(404).json({
-      message: error.message,
-    });
+    next(error);
   }
 };
 
-export const getCategoriesById = async (req, res) => {
+export const getCategoriesById = async (req, res, next) => {
   try {
     const categoryById = req.params.id;
     const receivedCategory = await Category.findById(categoryById);
@@ -39,9 +35,7 @@ export const getCategoriesById = async (req, res) => {
     }
     return res.status(200).json(receivedCategory);
   } catch (error) {
-    return res.status(404).json({
-      message: error.message,
-    });
+    next(error);
   }
 };
 
@@ -58,17 +52,19 @@ export const deleteAllCategories = async (req, res) => {
       .status(201)
       .json({ message: "Deleted All categories Successfully" });
   } catch (error) {
-    return res.status(404).json({ message: "Deletion Failed" });
+    next(error);
   }
 };
 
 export const deleteCategoryById = async (req, res) => {
-  const categoryById = req.params.id;
-  if (mongoose.Types.ObjectId.isValid(categoryById)) {
-    await Category.findByIdAndRemove(categoryById);
+  const isCategoryAvailable = await Category.findById(req.params.id);
+  if (!isCategoryAvailable) {
     return res
-      .status(201)
-      .json(`Category with ${categoryById} deleted successfully`);
+      .status(404)
+      .json({ message: `No id with ${req.params.id} found` });
   }
-  return res.status(404).json({ message: `No id with ${categoryById} found` });
+  await Category.findByIdAndRemove(req.params.id);
+  return res
+    .status(201)
+    .json(`Category with ${req.params.id} deleted successfully`);
 };
